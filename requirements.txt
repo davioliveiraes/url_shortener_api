@@ -1,0 +1,28 @@
+# Framework Web
+Django==4.2.7
+djangorestframework==3.14.0
+
+# Banco de Dados (psycopg3 é mais moderno e não precisa compilar)
+psycopg[binary]==3.2.12
+
+# Utilitários
+python-decouple==3.8
+qrcode[pil]==7.4.2
+
+# CORS
+django-cors-headers==4.3.1
+
+# Linting e Análise de Código
+pylint==3.0.3
+pylint-django==2.5.5
+
+# Formtação de Código
+black==23.12.1
+isort==5.13.2
+
+# Pre-commit Hooks
+pre-commit==3.6.0
+
+# Type Checking
+mypy==1.8.0
+django-stubs==4.2.7

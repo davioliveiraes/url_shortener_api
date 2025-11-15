@@ -1,0 +1,59 @@
+[MASTER]
+# Arquivos e diretórios a ignorar
+ignore=CVS,migrations,venv,env,.venv
+ignore-patterns=test_.*?py,conftest.py
+
+# Usar múltiplos processos para acelerar
+jobs=4
+
+# Carregar plugins
+load-plugins=pylint_django
+
+# Django settings module
+django-settings-module=config.settings
+
+[MESSAGES CONTROL]
+# Desabilitar algumas checagens muito restritivas para Django
+disable=
+    C0111,  # missing-docstring
+    C0103,  # invalid-name (para permitir nomes curtos em views)
+    R0903,  # too-few-public-methods (models podem ter poucos métodos)
+    R0801,  # duplicate-code
+    W0212,  # protected-access (Django usa bastante)
+    C0330,  # bad-continuation
+    C0326,  # bad-whitespace
+    W0613,  # unused-argument (comum em Django signals)
+    R0901,  # too-many-ancestors (Django models têm muitos)
+    R0913,  # too-many-arguments
+
+[FORMAT]
+# Número máximo de caracteres por linha
+max-line-length=100
+
+# Usar 4 espaços para indentação
+indent-string='    '
+
+[BASIC]
+# Convenções de nomenclatura
+good-names=i,j,k,ex,pk,id,_,db
+
+# Regex para nomes de variáveis
+variable-rgx=[a-z_][a-z0-9_]{0,30}$
+
+[DESIGN]
+# Máximo de argumentos em funções
+max-args=7
+
+# Máximo de atributos em classes
+max-attributes=10
+
+# Máximo de statements em funções
+max-statements=50
+
+[IMPORTS]
+# Permitir imports de pacotes do Django
+allow-wildcard-with-all=no
+
+[TYPECHECK]
+# Membros gerados dinamicamente pelo Django
+generated-members=objects,DoesNotExist,id,pk,_meta,MultipleObjectsReturned

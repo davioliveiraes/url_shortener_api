@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.egg-info/
+
+# Django
+*.log
+db.sqlite3
+/media
+/staticfiles
+
+# Ambiente
+.env
+.env.local
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDEs
+.vscode
+.idea
+*.swp
+
+# Testes
+.coverage
+htmlcov/
+
+# Documentação
+README.md
+docs/
+```

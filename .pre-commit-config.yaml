@@ -1,0 +1,64 @@
+repos:
+  # Hooks básicos do pre-commit
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remove espaços em branco no final das linhas
+      - id: end-of-file-fixer
+        name: Garante nova linha no final dos arquivos
+      - id: check-yaml
+        name: Valida arquivos YAML
+      - id: check-added-large-files
+        name: Previne commit de arquivos grandes
+        args: ['--maxkb=1000']
+      - id: check-json
+        name: Valida arquivos JSON
+      - id: check-toml
+        name: Valida arquivos TOML
+      - id: check-merge-conflict
+        name: Detecta marcadores de merge conflict
+      - id: debug-statements
+        name: Detecta declarações de debug
+      - id: mixed-line-ending
+        name: Corrige finais de linha mistos
+
+  # Black - Formatação de código
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        name: Black (formatação de código)
+        language_version: python3.13  # ← MUDOU AQUI
+        args: ['--line-length=100']
+
+  # isort - Organização de imports
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (organização de imports)
+        args: ['--profile=black', '--line-length=100']
+
+  # Comentar Pylint e Django Check por enquanto (vamos habilitar depois que Django estiver configurado)
+  # - repo: local
+  #   hooks:
+  #     - id: pylint
+  #       name: Pylint (análise de código)
+  #       entry: pylint
+  #       language: system
+  #       types: [python]
+  #       args:
+  #         - --rcfile=.pylintrc
+  #         - --load-plugins=pylint_django
+  #         - --django-settings-module=config.settings
+  #       exclude: ^(migrations|venv|env|\.venv)/
+
+  # - repo: local
+  #   hooks:
+  #     - id: django-check
+  #       name: Django Check (validação do projeto)
+  #       entry: bash -c 'docker-compose run --rm web python manage.py check --deploy || true'
+  #       language: system
+  #       pass_filenames: false
+  #       always_run: true
