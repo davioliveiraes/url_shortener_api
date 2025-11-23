@@ -25,6 +25,8 @@ disable=
     W0613,  # unused-argument (comum em Django signals)
     R0901,  # too-many-ancestors (Django models têm muitos)
     R0913,  # too-many-arguments
+    F0002, # astroid-error
+    R0022, # useless-option-value
 
 [FORMAT]
 # Número máximo de caracteres por linha
