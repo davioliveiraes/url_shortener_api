@@ -95,8 +95,8 @@ class ShortenedURLAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.annotate(
-            clicks_count=Count("Clicks"),
-            unique_ips_count=Count("Clicks__ip_address", distinct=True),
+            clicks_count=Count("clicks"),
+            unique_ips_count=Count("clicks__ip_address", distinct=True),
         )
 
     def original_url_truncated(self, obj):

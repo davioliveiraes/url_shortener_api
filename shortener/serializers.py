@@ -95,7 +95,7 @@ class ShortenedURLDetailSerializer(serializers.ModelSerializer):
         return {"can_access": can_access, "message": message}
 
     def get_recent_clicks(self, obj):
-        recent = obj.Clicks.all()[:10]
+        recent = obj.clicks.all()[:10]
         return ClickSerializer(recent, many=True).data
 
 

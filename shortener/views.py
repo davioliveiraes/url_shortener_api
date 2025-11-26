@@ -71,6 +71,20 @@ class ShortenedURLViewSet(viewsets.ModelViewSet):
         return Response(detail_serializer.data)
 
     @action(detail=True, methods=["post"])
+    def activate(self, request, short_code=None):
+        url = self.get_object()
+        url.is_active = True
+        url.save()
+
+        serializer = ShortenedURLDetailSerializer(url, context={"request": request})
+        return Response(
+            {
+                "message": "Link desativado com sucesso",
+                "data": serializer.data,
+            }
+        )
+
+    @action(detail=True, methods=["post"])
     def deactivate(self, request, short_code=None):
         url = self.get_object()
         url.is_active = False

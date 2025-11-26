@@ -81,15 +81,15 @@ class ShortenedURL(models.Model):
         return False
 
     def has_reached_max_clicks(self):
-        if self.max_clicks and self.unique_clicks >= self.max_clicks:
-            return True
-        return False
+        if not self.max_clicks or self.max_clicks == 0:
+            return False
+        return self.unique_clicks >= self.max_clicks
 
     def can_be_accessed(self):
         if not self.is_active:
-            return False, "Link desativado"
+            return False, "Link inativo"
         if self.is_expired():
-            return False, "Link desativado"
+            return False, "Link expirado"
         if self.has_reached_max_clicks():
             return False, "Limite de cliques atingido"
         return True, "OK"
@@ -105,7 +105,7 @@ class Click(models.Model):
     url = models.ForeignKey(
         ShortenedURL,
         on_delete=models.CASCADE,
-        related_name="Clicks",
+        related_name="clicks",
         verbose_name="URL",
         help_text="URL encurtada que foi clicada",
     )
