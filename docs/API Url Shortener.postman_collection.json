@@ -1,0 +1,1310 @@
+{
+	"info": {
+		"_postman_id": "2fb45242-b376-4c5c-bf47-b42a64aec8a8",
+		"name": "API Url Shortener",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32841767"
+	},
+	"item": [
+		{
+			"name": "CRUD Operations",
+			"item": [
+				{
+					"name": "GET Create Url (Auto Generated)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Short code auto-generated\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('short_code');",
+									"    pm.expect(jsonData.short_code).to.have.lengthOf(6);",
+									"    pm.environment.set(\"auto_short_code\", jsonData.short_code);",
+									"});",
+									"",
+									"pm.test(\"QR code generated\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('qr_code');",
+									"    pm.expect(jsonData.qr_code).to.not.be.null;",
+									"});",
+									"",
+									"pm.test(\"URL is active by default\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.is_active).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Clicks are zero\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.total_clicks).to.eql(0);",
+									"    pm.expect(jsonData.unique_clicks).to.eql(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://github.com/davioliveiraes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET List URLs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has pagination\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('count');",
+									"    pm.expect(jsonData).to.have.property('results');",
+									"});",
+									"",
+									"pm.test(\"Results is an array\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.results).to.be.an('array');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create URL (Custom Code)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Custom short code saved\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.short_code).to.eql(\"linkedin\");",
+									"    pm.environment.set(\"custom_short_code\", jsonData.short_code);",
+									"});",
+									"",
+									"pm.test(\"Response has all required fields\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('original_url');",
+									"    pm.expect(jsonData).to.have.property('short_code');",
+									"    pm.expect(jsonData).to.have.property('short_url');",
+									"    pm.expect(jsonData).to.have.property('qr_code');",
+									"    pm.expect(jsonData).to.have.property('created_at');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://www.linkedin.com/in/davioliveiraes\",\n    \"short_code\": \"linkedin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Create URL (With Expiration)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Expiration date saved\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.expires_at).to.not.be.null;",
+									"});",
+									"",
+									"pm.test(\"Max clicks saved\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.max_clicks).to.eql(100);",
+									"});",
+									"",
+									"pm.test(\"Statistics object present\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('statistics');",
+									"    pm.expect(jsonData.statistics.is_expired).to.be.false;",
+									"    pm.expect(jsonData.statistics.has_reached_max_clicks).to.be.false;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://testexemple.com/promo-black-friday\",\n    \"short_code\": \"black2025\",\n    \"expires_at\": \"2025-12-31T23:59:59Z\",\n    \"max_clicks\": 100\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Has complete details\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('statistics');",
+									"    pm.expect(jsonData).to.have.property('recent_clicks');",
+									"    pm.expect(jsonData).to.have.property('status');",
+									"});",
+									"",
+									"pm.test(\"Statistics has required fields\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var stats = jsonData.statistics;",
+									"    pm.expect(stats).to.have.property('total_clicks');",
+									"    pm.expect(stats).to.have.property('unique_clicks');",
+									"    pm.expect(stats).to.have.property(\"is_expired\");",
+									"    pm.expect(stats).to.have.property(\"has_reached_max_clicks\");",
+									"});",
+									"",
+									"pm.test(\"Status object valid\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.have.property('can_access');",
+									"    pm.expect(jsonData.status).to.have.property('message');",
+									"});",
+									"",
+									"pm.test(\"Recent clicks is array\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.recent_clicks).to.be.an('array');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/{{auto_short_code}}/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"{{auto_short_code}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH Update URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"URL was updated\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.original_url).to.include(\"python-projects\");",
+									"});",
+									"",
+									"pm.test(\"Max clicks updated\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.max_clicks).to.eql(50);",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://github.com/davioliveiraes/python-projects\",\n    \"max_clicks\": 50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/{{auto_short_code}}/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"{{auto_short_code}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Search URLs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Search returned results\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.results.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Results contain search term\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    var hasSearchTerm = jsonData.results.some(url =>",
+									"        url.original_url.toLowerCase().includes('github') ||",
+									"        url.short_code.toLowerCase().includes('github')",
+									"    );",
+									"    pm.expect(hasSearchTerm).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/?search=github",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "github"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Filter Active URLs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"All results are active\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    var allActive = jsonData.results.every(url => url.is_active === true);",
+									"    pm.expect(allActive).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/urls/?is_active=true",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							],
+							"query": [
+								{
+									"key": "is_active",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Delete URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function() {",
+									"    pm.response.to.have.status(204);",
+									"});",
+									"",
+									"pm.test(\"No content returned\", function() {",
+									"    pm.expect(pm.response.text()).to.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/urls/black2025/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"black2025",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actions",
+			"item": [
+				{
+					"name": "POST Activate URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Success message received\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData.message).to.include('ativado');",
+									"});",
+									"",
+									"pm.test(\"URL is now active\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.is_active).to.be.true;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/{{custom_short_code}}/activate/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"{{custom_short_code}}",
+								"activate",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Deactivate URL",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Success message received\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('message');",
+									"    pm.expect(jsonData.message).to.include('desativado');",
+									"});",
+									"",
+									"pm.test(\"URL is now inactive\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data.is_active).to.be.false;",
+									"})",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/{{custom_short_code}}/deactivate/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"{{custom_short_code}}",
+								"deactivate",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Statistics",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Has all statistics fields\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('short_code');",
+									"    pm.expect(jsonData).to.have.property('original_url');",
+									"    pm.expect(jsonData).to.have.property('total_clicks');",
+									"    pm.expect(jsonData).to.have.property('unique_clicks');",
+									"    pm.expect(jsonData).to.have.property('is_expired');",
+									"    pm.expect(jsonData).to.have.property(\"has_reached_max_clicks\");",
+									"    pm.expect(jsonData).to.have.property(\"recent_clicks\");",
+									"});",
+									"",
+									"pm.test(\"Recent clocks is array\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.total_clicks).to.be.a('number');",
+									"    pm.expect(jsonData.unique_clicks).to.be.a('number');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/urls/{{auto_short_code}}/statistics/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"{{auto_short_code}}",
+								"statistics",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET QR Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 404\", function() {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+									"});",
+									"",
+									"if (pm.response.code === 200) {",
+									"    pm.test(\"QR code url present\", function() {",
+									"        var jsonData = pm.response.json();",
+									"        pm.expect(jsonData).to.have.property('qr_code_url');",
+									"        pm.expect(jsonData.qr_code.url).to.include('http');",
+									"    });",
+									"",
+									"    pm.test(\"Short code returned\", function() {",
+									"        var jsonData = pm.response.json();",
+									"        pm.expect(jsonData).to.have.property('short_code');",
+									"    });",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/urls/{{auto_short_code}}/qrcode/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								"{{auto_short_code}}",
+								"qrcode",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Redirects",
+			"item": [
+				{
+					"name": "GET Redirect URL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: pm.environment.get(\"api_url\") + \"/urls/\" + pm.environment.get(\"auto_short_code\") + \"/statistics/\",",
+									"    method: 'GET'",
+									"}, function(err, response) {",
+									"    if (!err) {",
+									"        var stats = response.json();",
+									"        pm.environment.set(\"clicks_before\", stats.total_clicks);",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 302\", function() {",
+									"    pm.response.to.have.status(302);",
+									"});",
+									"",
+									"pm.test(\"Location header present\", function() {",
+									"    pm.expect(pm.response.headers.has('Location')).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Redirects to original URL\", function() {",
+									"    var location = pm.response.headers.get('Location');",
+									"    pm.expect(location).to.include('github.com');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/r/{{auto_short_code}}/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"r",
+								"{{auto_short_code}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Redirect Inactive URL",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({",
+									"    url: pm.environment.get(\"api_url\") + \"/urls/linkedin/deactivate/\",",
+									"    method: 'POST'",
+									"}, function(err, response) {",
+									"    console.log(\"URL desativada para teste\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 403\", function() {",
+									"    pm.response.to.have.status(403);",
+									"});",
+									"",
+									"pm.test(\"Error message present\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('error');",
+									"    pm.expect(jsonData.error).to.include('inativo');",
+									"});",
+									"",
+									"pm.test(\"Short code in response\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('short_code');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/r/linkedin/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"r",
+								"linkedin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Redirect Not Found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function() {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/r/codigonaoexiste123/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"r",
+								"codigonaoexiste123",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validations",
+			"item": [
+				{
+					"name": "POST Invalid URL Format",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error in original_url field\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('original_url');",
+									"    pm.expect(jsonData.original_url).to.be.an('array');",
+									"});",
+									"",
+									"pm.test(\"Error message present\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.original_url[0]).to.include('URL');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"github.com/davioliveiraes\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Short Code Too Short",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error in short_code field\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('short_code');",
+									"});",
+									"",
+									"pm.test(\"Error message mentions minimum length\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    var errorMsg = jsonData.short_code[0].toLowerCase();",
+									"    pm.expect(errorMsg).to.include('minimo');",
+									"    pm.expect(errorMsg).to.include('3');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://testexemple.com\",\n    \"short_code\": \"ab\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Short Code Special Chara",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error message about alphanumeric\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.short_code).to.be.an('array');",
+									"    var errorMsg = jsonData.short_code[0].toLowerCase();",
+									"    pm.expect(errorMsg).to.satisfy(function(msg) {",
+									"        return msg.includes('letra') || msg.includes('numero') || msg.includes('alfanum');",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://testexemple.com\",\n    \"short_code\": \"test@%123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Duplicate Short Code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error about duplicate code\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('short_code');",
+									"    var errorMsg = jsonData.short_code[0].toLowerCase();",
+									"    pm.expect(errorMsg).to.satisfy(function(msg) {",
+									"        return msg.includes('uso') || msg.includes('existe');",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://exemple-url.com\",\n    \"short_code\": \"linkedin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Past Expiration Date",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error in expires_at field\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('expires_at');",
+									"});",
+									"",
+									"pm.test(\"Error message about future date\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    var errorMsg = jsonData.expires_at[0].toLowerCase();",
+									"    pm.expect(errorMsg).to.include('futuro');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://testexample.com\",\n    \"expires_at\": \"2020-01-01T00:00:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Zero Max Clicks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error in max_clicks field\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('max_clicks');",
+									"});",
+									"",
+									"pm.test(\"Error message about positive number\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    var errorMsg = jsonData.max_clicks[0].toLowerCase();",
+									"    pm.expect(errorMsg).to.satisfy(function(msg) {",
+									"        return msg.includes('maior') || msg.includes('zero');",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://testexample.com\",\n    \"max_clicks\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Negative Max Clicks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Error in max_clicks field\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property('max_clicks');",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"original_url\": \"https://testexemple.com\",\n    \"max_clicks\": -10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/urls/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"urls",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://99318cc5-f2db-4208-ad3a-d1964e768001.mock.pstmn.io"
+		}
+	]
+}

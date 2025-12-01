@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
@@ -79,7 +80,7 @@ class ShortenedURLViewSet(viewsets.ModelViewSet):
         serializer = ShortenedURLDetailSerializer(url, context={"request": request})
         return Response(
             {
-                "message": "Link desativado com sucesso",
+                "message": "Link ativado com sucesso",
                 "data": serializer.data,
             }
         )
@@ -141,7 +142,13 @@ class ShortenedURLViewSet(viewsets.ModelViewSet):
 
 @csrf_exempt
 def redirect_shortened_url(request, short_code):
-    url = get_object_or_404(ShortenedURL, short_code=short_code)
+    try:
+        url = ShortenedURL.objects.get(short_code=short_code)
+    except ObjectDoesNotExist:
+        return JsonResponse(
+            {"error": "URL encurtada nao encontrado", "short_code": short_code},
+            status=404,
+        )
 
     can_access, message = url.can_be_accessed()
 

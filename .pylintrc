@@ -30,6 +30,8 @@ disable=
     W0611, # unused-import
     W0621, # redefined-outer-name
     C0415, # import-outside-toplevel
+    W0612, # unused-variable
+    C0301, # line-too-long
 
 [FORMAT]
 # Número máximo de caracteres por linha
