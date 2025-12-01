@@ -1,3 +1,9 @@
+"""
+Configuração administrativa do Django para aplicativo de encurtamento de URLs.
+
+Este módulo personaliza a interface administrativa do Django para gerenciar URLs encurtadas e cliques com recursos avançados como edição em linha filtro e ações personalizadas.
+"""
+
 from django.contrib import admin
 from django.db.models import Count, Q
 from django.db.models.query import QuerySet
@@ -12,6 +18,38 @@ from .models import Click, ShortenedURL
 
 @admin.register(ShortenedURL)
 class ShortenedURLAdmin(admin.ModelAdmin):
+    """
+    Interface administrativa avançada para o modelo ShortenedURL.
+
+    Funcionalidades:
+        - Exibição de lista com badges de status coloridos
+        - Filtros por status, data de criação, expiração e limite de cliques
+        - Busca por código curto e URL original
+        - Preview de QR Code inline e ampliado
+        - Estatísticas de cliques com barra de progresso
+        - Histórico detalhada dos últimos 10 cliques
+        - Ações em massa para ativar, desativar e deletar URLs expiradas
+        - Fieldsets organizados para melhor experiência de edição
+        - Campos somente leitura para dados do sistema
+        - Ordenação por data de criação (mais recentes primeiro)
+        - Hierarquia de datas para navegação temporal
+
+    Campos Calculados:
+        - original_url_truncated: URL original truncada com link
+        - status_badge: Badge colorido com ícone de status
+        - click_stats: Estatísticas com basse de progresso
+        - qr_proview: Miniatura do QR Code (40x40)
+        - qr_code_large: Preview ampliado do QR Code (300x300)
+        - short_url_full: URL completa com botão de teste
+        - access_status_display: Tabela detalhda de status de acesso
+        - recent_clicks_display: Tabela dos últimos 10 cliques
+
+    Ações Disponíveis:
+        - activate_selected: Ativa URLs selecionadas
+        - deactivate_selected: Desativa URLs selecionadas
+        - delete_expired_urls: Remove URLs expiradas do banco
+    """
+
     list_display = [
         "short_code",
         "original_url_truncated",
@@ -258,7 +296,7 @@ class ShortenedURLAdmin(admin.ModelAdmin):
     access_status_display.short_description = "Status de Acesso Detalhado"
 
     def recent_clicks_display(self, obj):
-        clicks = obj.Clicks.all().order_by("-clicked_at")[:10]
+        clicks = obj.clicks.all().order_by("-clicked_at")[:10]
 
         if not clicks.exists():
             return format_html(
@@ -357,6 +395,24 @@ class ShortenedURLAdmin(admin.ModelAdmin):
 
 @admin.register(Click)
 class ClickAdmin(admin.ModelAdmin):
+    """
+    Interface administrativa para o modelo Click
+
+    Funcionalidades:
+        - Exibição de lista com informações do clique
+        - Filtros por data e URL
+        - Busca por código curto da URL, IP e user agent
+        - Campos somente leitura (cliques são imutáveis)
+        - Hierarquia de datas para navegação temporal
+        - Formatação especial do user agent e referer
+        - Link direto para a URL associada no admin
+
+    Restrições:
+        - Não permite adicionar cliques manualmente
+        - Não permite editar cliques existentes
+        - Apenas visualização e deleção (se necessário)
+    """
+
     list_display = [
         "url",
         "ip_address",

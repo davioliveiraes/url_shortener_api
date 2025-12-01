@@ -1,3 +1,10 @@
+"""
+Funções auxiliares para aplicativos de encurtamento de URLs.
+
+Este módulo fornece funções auxiliares para geração de código QR e extração de IP.
+
+"""
+
 import random
 import string
 from io import BytesIO

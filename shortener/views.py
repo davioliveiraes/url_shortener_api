@@ -1,3 +1,9 @@
+"""
+APIs de visualização para aplicativos de encurtamento de URLs.
+
+Este módulo contém ViewSets e visualizações para gerenciar URLs encurtadas, lidar com redirecionamentos e rastrear cliques.
+"""
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import F, Q
 from django.http import JsonResponse
@@ -21,6 +27,23 @@ from .utils import generate_qr_code, get_client_ip
 
 
 class ShortenedURLViewSet(viewsets.ModelViewSet):
+    """
+        Conjunto de visualizações para gerenciar URLs encurtadas.
+
+        Fornece operações CRUD e ações personalizadas para gerenciamento de URLs.
+
+    Endpoints:
+        - GET /api/urls/ - Listar todos os URLs (com paginação, pesquisa e filtros)
+        - POST /api/urls/ - Criar um novo URL encurtado
+        - GET /api/urls/{short_code}/ - Recuperar detalhes do URL
+        - PATCH /api/urls/{short_code}/ - Atualizar URL
+        - DELETE /api/urls/{short_code}/ - Excluir URL
+        - POST /api/urls/{short_code}/activate/ - Ativar URL
+        - POST /api/urls/{short_code}/deactivate/ - Desativar URL
+        - GET /api/urls/{short_code}/statistics/ - Obter estatísticas do URL
+        - GET /api/urls/{short_code}/qrcode/ - Obter código QR
+    """
+
     queryset = ShortenedURL.objects.all()
     lookup_field = "short_code"
 

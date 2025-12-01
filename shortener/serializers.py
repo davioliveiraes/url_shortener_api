@@ -1,3 +1,9 @@
+"""
+Serializadores para aplicativo de encurtamento de URLs.
+
+Este módulo contém todos os serializadores DRF para validação de dados, transformação e representação de URLs encurtadas e cliques.
+"""
+
 from django.utils import timezone
 
 from rest_framework import serializers
@@ -6,6 +12,20 @@ from .models import Click, ShortenedURL
 
 
 class ClickSerializer(serializers.ModelSerializer):
+    """
+    Serializador para o modelo Click.
+
+    Fornece uma representação somente leitura dos dados do clique, incluindo:
+        Endereço IP, agente do usuário, referenciador e carimbo de data/hora.
+
+    Campos:
+        id: ID do clique
+        ip_address: Endereço IP do usuário
+        user_agent: Informações do navegador e do sistema operacional
+        referer: URL de origem do clique
+        clicked_at: Carimbo de data/hora em que o clique ocorreu
+    """
+
     class Meta:
         model = Click
         fields = ["id", "ip_address", "user_agent", "referer", "clicked_at"]
@@ -13,6 +33,16 @@ class ClickSerializer(serializers.ModelSerializer):
 
 
 class ShortenedURLListSerializer(serializers.ModelSerializer):
+    """
+    Serializador para listar URLs encurtadas.
+
+    Fornece uma visão resumida com informações essenciais e campos calculadors para exibição em listas.
+
+    Campos adicionais:
+        short_url: URL completa para redirecionamento
+        status: Status de acesso com o indicador can_access e a mensagem
+    """
+
     short_url = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
 
@@ -42,6 +72,18 @@ class ShortenedURLListSerializer(serializers.ModelSerializer):
 
 
 class ShortenedURLDetailSerializer(serializers.ModelSerializer):
+    """
+    Serializador para visualização detalhada de URLs encurtadas.
+
+    Fornece informações completas, incluindo estatísticas, cliques recentes e campos calculados.
+
+    Campos adicionais:
+        short_url: URL completa para redirecionamento
+        statistics: Estatísticas de cliques e informações de status
+        status: Status de acesso atual
+        recent_clicks: Últimos 10 cliques nesta URL
+    """
+
     short_url = serializers.SerializerMethodField()
     statistics = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
@@ -100,6 +142,17 @@ class ShortenedURLDetailSerializer(serializers.ModelSerializer):
 
 
 class ShortenedURLCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializador para criação de URLs encurtadas.
+
+    Lida com a validação de dados de entrada e geração automática de códigos curtos quando não fornecidos pelo usuário.
+
+    Validações:
+        short_code: Opcional, alfanumérico, mínimo de 3 caracteres, deve ser único
+        expires_at: Deve ser uma data futura, se fornecido
+        max_clicks: Deve ser positivo, se fornecido
+    """
+
     short_code = serializers.CharField(
         max_length=10,
         required=False,
@@ -152,6 +205,18 @@ class ShortenedURLCreateSerializer(serializers.ModelSerializer):
 
 
 class ShortenedURLUpdateSerializer(serializers.ModelSerializer):
+    """
+    Serializador para atualização de URLs encurtadas.
+
+    Permite a atualização de campos mutáveis, protegendo os imutáveis, como short_code e contadores de cliques.
+
+    Campos atualizáveis:
+        original_url: A URL longa original
+        is_active: Status ativo/inativo
+        expires_at: Data/hora de expiração
+        max_clicks: Limite máximo de cliques
+    """
+
     class Meta:
         model = ShortenedURL
         fields = ["original_url", "is_active", "expires_at", "max_clicks"]

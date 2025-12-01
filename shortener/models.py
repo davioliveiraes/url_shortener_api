@@ -1,8 +1,30 @@
+"""
+Modelos para aplicação de encurtamento de URLs
+
+Este módulo define os modelos de banco de dados para URLs encurtadas e rastreamento de cliques.
+"""
+
 from django.db import models
 from django.utils import timezone
 
 
 class ShortenedURL(models.Model):
+    """
+    Modelo representando uma URL encurtada.
+
+    Atributos:
+        original_url(str): A URL longa original a ser encurtada.
+        short_code (str): O código curto exclusivo da URL.
+        is_active (bool): Indica se a URL encurtada está ativa.
+        expires_at (datetime): Data/hora de expiração opcional para a URL.
+        max_clicks (int): Número máximo de cliques únicos permitidos (0 = ilimitado).
+        total_clicks (int): Número total de cliques recebidos
+        unique_clicks (int): Número de cliques únicos (com base no endereço IP).
+        qr_code (ImageField): Imagem do código QR gerada automaticamente.
+        created_at (datetime): Data e hora em que a URL foi criada.
+        updated_at (datetime): Data e hora em que a URL foi atualizada pela última vez.
+    """
+
     original_url = models.URLField(
         verbose_name="URL Original",
         max_length=2048,
@@ -102,6 +124,17 @@ class ShortenedURL(models.Model):
 
 
 class Click(models.Model):
+    """
+    Modelo que representa um clique em uma URL encurtada.
+
+    Atributos:
+        url (ForeignKey): Referência à URL encurtada clicada.
+        ip_address(str): Endereço IP do usuário que clicou.
+        user_agent(str): Informações do navegador e do sistema operacional do usuário.
+        referer (str): URL de origem do clique.
+        clicked_at (datetime): Data e hora em que o clique ocorreu
+    """
+
     url = models.ForeignKey(
         ShortenedURL,
         on_delete=models.CASCADE,
