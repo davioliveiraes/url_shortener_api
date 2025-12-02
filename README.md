@@ -7,7 +7,17 @@
 [![DRF](https://img.shields.io/badge/DRF-3.14.0-red.svg)](https://www.django-rest-framework.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
-[![Tests](https://img.shields.io/badge/Tests-53%20passing-brightgreen.svg)](https://github.com/yourusername/url-shortener-api)
+[![Tests](https://img.shields.io/badge/Tests-53%20passing-brightgreen.svg)](https://github.com/davioliveiraes/url-shortener-api)
+
+---
+
+## Vídeo de uso da API!
+
+**[▶️ Assistir demonstração completa no YouTube (10 minutos)](https://www.youtube.com/watch?v=HmWwuJSEhFU)**
+
+*O vídeo demonstra: criação de URLs, tracking de cliques, QR Codes, estatísticas, validações, interface admin e testes automatizados.*
+
+---
 
 ## 📋 Índice
 
@@ -73,7 +83,6 @@ API RESTful completa para encurtamento de URLs, desenvolvida com as melhores pr�
 
 ### DevOps & Tools
 - **Docker & Docker Compose** - Containerização
-- **Gunicorn** - WSGI HTTP Server (produção)
 - **Git** - Controle de versão
 
 ### Qualidade de Código
@@ -323,6 +332,7 @@ Contribuições são bem-vindas!
 
 - GitHub: [@davioliveira](https://github.com/davioliveiraes)
 - LinkedIn: [Davi Oliveira](https://linkedin.com/in/davioliveiraes)
+- YouTube: [Davi Oliveira](https://www.youtube.com/@davioliveiraES)
 
 ---
 
