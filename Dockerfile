@@ -1,33 +1,28 @@
-# Imagem base Python 3.11
-FROM python:3.11-slim
+# Use Python 3.13 (mesma versão do runtime.txt)
+FROM python:3.13-slim
 
-# Informações do mantenedor
-LABEL maintainer="seu-email@example.com"
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Variáveis de ambiente
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
-
-# Diretório de trabalho
+# Set work directory
 WORKDIR /app
 
-# Instalar apenas PostgreSQL client (psycopg3 não precisa compilar)
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     postgresql-client \
+    build-essential \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar e instalar dependências
-COPY requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-# Copiar projeto
-COPY . .
+# Copy project
+COPY . /app/
 
-# Expor porta
-EXPOSE 8000
-
-# Comando padrão
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run migrations and start server
+CMD python manage.py migrate && \
+    python manage.py runserver 0.0.0.0:8000
