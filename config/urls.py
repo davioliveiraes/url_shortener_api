@@ -9,5 +9,5 @@ urlpatterns = [
 ]
 
 # Servir os arquivos de media em desenvolvimento
-if settings.DEBUG:
+if settings.DEBUG or True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
