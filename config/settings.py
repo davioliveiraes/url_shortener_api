@@ -155,6 +155,11 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # WhiteNoise configuration
 STATICFILES_STORAGE = "whitenoise.storage.StaticFilesStorage"
 
+# Configurações adicionais do WhiteNoise
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True if DEBUG else False
+WHITENOISE_ROOT = BASE_DIR / "staticfiles"
+
 # Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
