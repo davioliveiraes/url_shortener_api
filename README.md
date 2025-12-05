@@ -323,12 +323,10 @@ https://url-shortener-api-9h2j.onrender.com/api/r/{code}/
 
 ### ⚠️ Nota sobre QR Codes:
 
-Os QR Codes são gerados automaticamente, mas devido ao **storage efêmero do Render** (limitação do plano gratuito), as imagens não persistem entre deploys.
+Os QR Codes são gerados automaticamente, mas devido ao **storage efêmero do Render**, as imagens não persistem entre deploys.
 
 **Para produção real:** AWS S3 ou Cloudinary
 **Para visualizar QR Codes:** Rode localmente com Docker
-
-📸 **Screenshots completos** disponíveis em [`docs/screenshots/`](docs/screenshots/)
 
 ### Características do Deploy:
 - ✅ PostgreSQL 16 em produção
