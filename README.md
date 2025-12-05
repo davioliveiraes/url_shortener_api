@@ -19,7 +19,7 @@
 
 ---
 
-## 📋 Índice
+## Índice
 
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Funcionalidades](#funcionalidades)
@@ -29,6 +29,7 @@
 - [Uso](#uso)
 - [API Endpoints](#api-endpoints)
 - [Testes](#testes)
+- [Demo Online](#demo-online)
 - [Documentação](#documentação)
 - [Contribuindo](#contribuindo)
 
@@ -293,6 +294,61 @@ OK
 - ✅ **Serializers** (16 testes) - Validações
 - ✅ **Views** (15 testes) - Endpoints CRUD
 - ✅ **Redirects** (9 testes) - Tracking de cliques
+
+---
+
+## Demo Online
+
+> ⚠️ **Demonstração temporária** para fins de portfólio.
+
+**API em Produção:** https://url-shortener-api-9h2j.onrender.com
+
+### Teste Rápido:
+```bash
+# Listar URLs
+curl https://url-shortener-api-9h2j.onrender.com/api/urls/
+
+# Criar URL encurtada
+curl -X POST https://url-shortener-api-9h2j.onrender.com/api/urls/ \
+  -H "Content-Type: application/json" \
+  -d '{"original_url": "https://github.com/davioliveiraes"}'
+
+# Redirecionar (substitua {code})
+https://url-shortener-api-9h2j.onrender.com/api/r/{code}/
+```
+
+### Django Admin:
+- **URL:** https://url-shortener-api-9h2j.onrender.com/admin/
+- **User:** admin (senha disponível sob solicitação)
+
+### ⚠️ Nota sobre QR Codes:
+
+Os QR Codes são gerados automaticamente, mas devido ao **storage efêmero do Render** (limitação do plano gratuito), as imagens não persistem entre deploys.
+
+**Para produção real:** AWS S3 ou Cloudinary
+**Para visualizar QR Codes:** Rode localmente com Docker
+
+📸 **Screenshots completos** disponíveis em [`docs/screenshots/`](docs/screenshots/)
+
+### Características do Deploy:
+- ✅ PostgreSQL 16 em produção
+- ✅ Gunicorn + WhiteNoise
+- ✅ SSL/HTTPS automático
+- ✅ CI/CD via GitHub
+- ✅ 53 testes (100% passing)
+
+### Endpoints Principais:
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | `/api/urls/` | Lista URLs |
+| POST | `/api/urls/` | Cria URL |
+| GET | `/api/urls/{code}/` | Detalhes |
+| GET | `/api/urls/{code}/statistics/` | Estatísticas |
+| GET | `/api/urls/{code}/qrcode/` | QR Code* |
+| GET | `/api/r/{code}/` | Redireciona |
+
+> *QR Codes funcionam via download. Para persistência, configure storage externo.
 
 ---
 
