@@ -13,7 +13,7 @@
 
 ## Vídeo de uso da API!
 
-**[▶️ Assistir demonstração completa no YouTube (10 minutos)](https://www.youtube.com/watch?v=HmWwuJSEhFU)**
+**[▶️ Assistir demonstração completa no YouTube (10 minutos)](https://www.youtube.com/watch?v=IOMnWbSL8Og)**
 
 *O vídeo demonstra: criação de URLs, tracking de cliques, QR Codes, estatísticas, validações, interface admin e testes automatizados.*
 
